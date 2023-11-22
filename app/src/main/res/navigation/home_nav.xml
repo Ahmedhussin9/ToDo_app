@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav"
+    app:startDestination="@id/taksListFragment">
+
+    <fragment
+        android:id="@+id/taksListFragment"
+        android:name="com.example.todo.ui.home.home.fragments.tasksListFragment.TasksListFragment"
+        android:label="fragment_taks_list"
+        tools:layout="@layout/fragment_tasks_list" >
+        <action
+            android:id="@+id/action_taksListFragment_to_settings_Fragment"
+            app:destination="@id/settings_Fragment" />
+        <action
+            android:id="@+id/action_taksListFragment_to_addTaskFragment"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/settings_Fragment"
+        android:name="com.example.todo.ui.home.home.fragments.settingsFragment.Settings_Fragment"
+        android:label="fragment_settings_"
+        tools:layout="@layout/fragment_settings_" >
+        <action
+            android:id="@+id/action_settings_Fragment_to_taksListFragment"
+            app:destination="@id/taksListFragment" />
+        <action
+            android:id="@+id/action_settings_Fragment_to_addTaskFragment"/>
+    </fragment>
+
+</navigation>
