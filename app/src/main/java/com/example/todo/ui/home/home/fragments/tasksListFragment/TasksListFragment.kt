@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.domian.Model.Task
 import com.example.todo.databinding.FragmentTasksListBinding
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
@@ -25,16 +27,15 @@ class TasksListFragment : Fragment() {
     }
 
     private fun subscribeToLiveData() {
-
         viewModel.Tasks.observe(viewLifecycleOwner){
-            tasksAdapter.bindTasks(it.toMutableList()) }
+            tasksAdapter.bindTasks(it.toMutableList())
+        }
     }
 
     private fun loadTasks() {
         viewModel.invokeAction(TasksListContract.Action.LoadTasks(selectedDate.timeInMillis))
 
     }
-
     val tasksAdapter= TasksListAdapter(null)
 
     private fun initViews() {
@@ -60,9 +61,9 @@ class TasksListFragment : Fragment() {
         }
     }
 
-    private val selectedDate: Calendar = Calendar.getInstance()
+    private val selectedDate = Calendar.getInstance()
      private fun initCalander() {
-            selectedDate.set(Calendar.HOUR,0)
+            selectedDate.set(Calendar.HOUR_OF_DAY,0)
             selectedDate.set(Calendar.SECOND,0)
             selectedDate.set(Calendar.MINUTE,0)
             selectedDate.set(Calendar.MILLISECOND,0)
@@ -77,8 +78,6 @@ class TasksListFragment : Fragment() {
         viewBinding = FragmentTasksListBinding.inflate(inflater,container,false)
         return viewBinding.root
     }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initCalander()

@@ -24,7 +24,6 @@ class `Di_MyRoomDB` {
         return Room.databaseBuilder(
             context,
             MyRoomDB::class.java,"TasksDataBase"
-        ).fallbackToDestructiveMigration()
-            .build()
+        ).build()
     }
 }

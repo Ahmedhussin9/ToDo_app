@@ -11,7 +11,7 @@ class AddTaskContract {
         fun invokeAction(action: Action)
     }
     sealed class Action{
-        class AddTask(val calender:Calendar): Action()
+        class AddTask(val time: Long): Action()
         class ValidateEditTexts(): Action()
         class PickDateAndTime(): Action()
     }
