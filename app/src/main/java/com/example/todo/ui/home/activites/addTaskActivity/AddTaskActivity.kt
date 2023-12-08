@@ -28,7 +28,6 @@ class AddTaskActivity : AppCompatActivity() {
     private fun clickListeners() {
         viewBinding.addTaskButton.setOnClickListener(){
             viewModel.invokeAction(AddTaskContract.Action.ValidateEditTexts())
-
         }
         viewBinding.datePicker.setOnClickListener(){
             viewModel.invokeAction(AddTaskContract.Action.PickDateAndTime())
@@ -47,7 +46,8 @@ class AddTaskActivity : AppCompatActivity() {
         }
         viewModel.formIsValid.observe(this){
             if (it==true){
-                viewModel.invokeAction(AddTaskContract.Action.AddTask(calender))
+                viewModel.invokeAction(AddTaskContract.Action.AddTask(calender.timeInMillis))
+
                 val intent = Intent(this, Home::class.java)
                 startActivity(intent)
                 finish()
@@ -79,12 +79,12 @@ class AddTaskActivity : AppCompatActivity() {
             }
         }
     }
-
     val calender = Calendar.getInstance()
     private fun showDatePickerDialog() {
         val dialog  = DatePickerDialog(this)
         dialog.setOnDateSetListener{
                 datePicker,year,month,day->
+
             viewBinding.datePicker.setText(
                 "$day-${month+1}-$year"
             )

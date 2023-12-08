@@ -3,6 +3,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.database.TasksDao
+import com.example.domian.usecases.addTask.AddTaskUseCase
 import com.example.todo.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -10,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddTaskViewModel @Inject constructor(
-    private val tasksDao:TasksDao,
+    var addTaskUseCase: AddTaskUseCase
 ):ViewModel (), AddTaskContract.ViewModel {
     var taskTitleLiveData = MutableLiveData<String>()
     var taskDescriptionLiveData = MutableLiveData<String>()
@@ -34,10 +35,9 @@ class AddTaskViewModel @Inject constructor(
                    val task = com.example.domian.Model.Task(
                     title = taskTitleLiveData.value,
                     description = taskDescriptionLiveData.value,
-                    dateTime = action.calender.timeInMillis
-                )
-                    tasksDao.insertTask(task)
-            }
+                    dateTime = action.time)
+                  addTaskUseCase.invoke(task)
+                }
             is AddTaskContract.Action.PickDateAndTime ->showDateTimePicker()
             is AddTaskContract.Action.ValidateEditTexts ->validate()
         }
