@@ -5,12 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.domian.Model.Task
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.todo.databinding.FragmentTasksListBinding
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -23,24 +21,39 @@ import java.util.Calendar
 class TasksListFragment : Fragment() {
     lateinit var viewBinding:FragmentTasksListBinding
      lateinit var viewModel: TasksListViewModel
+    val tasksAdapter= TasksListAdapter(null)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[TasksListViewModel::class.java]
-
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initCalander()
+        initViews()
+        loadTasks()
+        subscribeToLiveData()
+    }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
-    private fun subscribeToLiveData() {
-        viewModel.Tasks.observe(viewLifecycleOwner){
-            tasksAdapter.bindTasks(it.toMutableList())
-        }
+        viewBinding = FragmentTasksListBinding.inflate(inflater,container,false)
+        return viewBinding.root
+    }
+    private val selectedDate = Calendar.getInstance()
+    private fun initCalander() {
+        selectedDate.set(Calendar.HOUR_OF_DAY,0)
 
+        selectedDate.set(Calendar.SECOND,0)
+        selectedDate.set(Calendar.MINUTE,0)
+        selectedDate.set(Calendar.MILLISECOND,0)
+        viewBinding.calendarView.selectedDate = CalendarDay.today()
+    }
     private fun loadTasks() {
         viewModel.invokeAction(TasksListContract.Action.LoadTasks(selectedDate.timeInMillis))
 
     }
-
-    val tasksAdapter= TasksListAdapter(null)
-
     private fun initViews() {
         viewBinding.recyclerView.adapter =tasksAdapter
         viewBinding.calendarView.setOnDateChangedListener(OnDateSelectedListener{
@@ -58,38 +71,23 @@ class TasksListFragment : Fragment() {
             tasksAdapter.taskDelete(task)
         }
         tasksAdapter.onDoneClickListner = TasksListAdapter.OnDoneClickListner{
-            position, task ->
+                position, task ->
             viewModel.invokeAction(TasksListContract.Action.MarkTaskAsDone(task))
             tasksAdapter.markAsDone()
         }
     }
-
-
-    private val selectedDate = Calendar.getInstance()
-     private fun initCalander() {
-            selectedDate.set(Calendar.HOUR_OF_DAY,0)
-
-            selectedDate.set(Calendar.SECOND,0)
-            selectedDate.set(Calendar.MINUTE,0)
-            selectedDate.set(Calendar.MILLISECOND,0)
-        viewBinding.calendarView.selectedDate = CalendarDay.today()
+    private fun subscribeToLiveData() {
+        viewModel.Tasks.observe(viewLifecycleOwner){
+            tasksAdapter.bindTasks(it.toMutableList())
+        }
+    }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
 
-        viewBinding = FragmentTasksListBinding.inflate(inflater,container,false)
-        return viewBinding.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initCalander()
-        initViews()
-        loadTasks()
-        subscribeToLiveData()
 
-    }
-}
+
+
+
+
+
