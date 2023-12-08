@@ -1,11 +1,9 @@
 package com.example.todo.ui.home.activites.addTaskActivity
 
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.todo.R
@@ -49,6 +47,7 @@ class AddTaskActivity : AppCompatActivity() {
         viewModel.formIsValid.observe(this){
             if (it==true){
                 viewModel.invokeAction(AddTaskContract.Action.AddTask(calender.timeInMillis))
+
                 val intent = Intent(this, Home::class.java)
                 startActivity(intent)
                 finish()
@@ -80,12 +79,12 @@ class AddTaskActivity : AppCompatActivity() {
             }
         }
     }
-
-    val calender= Calendar.getInstance()
-     fun showDatePickerDialog() {
+    val calender = Calendar.getInstance()
+    private fun showDatePickerDialog() {
         val dialog  = DatePickerDialog(this)
         dialog.setOnDateSetListener{
-                _, year, month, day->
+                datePicker,year,month,day->
+
             viewBinding.datePicker.setText(
                 "$day-${month+1}-$year"
             )

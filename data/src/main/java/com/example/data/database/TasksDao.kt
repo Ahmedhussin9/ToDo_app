@@ -18,6 +18,8 @@ interface TasksDao {
     suspend fun updateTask(task: com.example.domian.Model.Task)
     @Delete
      suspend fun deleteTask(task: com.example.domian.Model.Task)
+
+
     @Query("select * from tasks where dateTime = :dateTime")
    suspend  fun getTasksByDate(dateTime:Long): List<com.example.domian.Model.Task>
 }

@@ -17,6 +17,8 @@ class TasksListViewModel @Inject constructor(
     val loadTasksByDayUseCase: LoadTasksByDayUseCase,
     val deleteTaskUseCase: DeleteTaskUseCase,
     val markAsDoneUseCase: MarkAsDoneUseCase,
+
+
 ) :ViewModel(), TasksListContract.ViewModel {
     private val _state=MutableLiveData<TasksListContract.State>()
     override val state=_state
