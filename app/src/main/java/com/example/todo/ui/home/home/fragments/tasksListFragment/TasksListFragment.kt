@@ -73,7 +73,7 @@ class TasksListFragment : Fragment() {
         tasksAdapter.onDoneClickListner = TasksListAdapter.OnDoneClickListner{
                 position, task ->
             viewModel.invokeAction(TasksListContract.Action.MarkTaskAsDone(task))
-            tasksAdapter.markAsDone()
+            tasksAdapter.markAsDone(task)
         }
     }
     private fun subscribeToLiveData() {

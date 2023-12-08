@@ -100,7 +100,8 @@ class TasksListAdapter(private var tasks:MutableList<Task>?):RecyclerView.Adapte
         notifyItemRemoved(position!!)
     }
 
-    fun markAsDone() {
+    fun markAsDone(task: Task) {
+        task.isDone = true
         notifyDataSetChanged()
     }
 }
